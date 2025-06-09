@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Usuario aleatorio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    #card {
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      width: 250px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: #f9f9f9;
+    }
+
+    #card img {
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Usuario aleatorio</h1>
+  <button onclick="mostrarUsuarioAleatorio()">Generar usuario</button>
+  <div id="card"></div>
+
+  <script>
+    async function mostrarUsuarioAleatorio() {
+      try {
+        
+        const pagina = Math.floor(Math.random() * 2) + 1;
+
+        // Obtener la lista de usuarios
+        const res = await fetch(`https://reqres.in/api/users?page=${pagina}`);
+        const json = await res.json();
+        const usuarios = json.data;
+
+        // Seleccionar un usuario aleatorio
+        const indice = Math.floor(Math.random() * usuarios.length);
+        const usuario = usuarios[indice];
+
+        
+        const card = document.getElementById('card');
+        card.innerHTML = `
+          <img src="${usuario.avatar}" alt="Avatar de ${usuario.first_name}">
+          <h3>${usuario.first_name} ${usuario.last_name}</h3>
+          <p>${usuario.email}</p>
+        `;
+      } catch (error) {
+        alert("No se pudo obtener el usuario.");
+      }
+    }
+  </script>
+</body>
+</html>
